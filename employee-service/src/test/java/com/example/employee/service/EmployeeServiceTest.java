@@ -3,6 +3,7 @@ package com.example.employee.service;
 import com.example.employee.client.DepartmentClient;
 import com.example.employee.domain.Employee;
 import com.example.employee.dto.EmployeeDTO;
+import com.example.employee.exception.DuplicateEmployeeException;
 import com.example.employee.repo.EmployeeRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -39,8 +40,8 @@ public class EmployeeServiceTest {
         if (duplicate) {
             assertThatThrownBy(() -> service.create(EmployeeDTO.builder()
                     .firstName("X").lastName("Y").email(email).build()))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("Email already exists");
+                    .isInstanceOf(DuplicateEmployeeException.class)
+                    .hasMessageContaining("Employee already exists");
         } else {
             when(repository.save(any(Employee.class)))
                     .thenAnswer(inv -> { Employee e = inv.getArgument(0); e.setId(101L); return e; });
