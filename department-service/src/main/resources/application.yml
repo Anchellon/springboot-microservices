@@ -40,3 +40,10 @@ management:
     web:
       exposure:
         include: health,info
+logging:
+  pattern:
+    console: "[%X{traceId:-NO_TRACE}] %d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"
+    file: "[%X{traceId:-NO_TRACE}] %d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"
+  level:
+    com.example.department: DEBUG
+    org.springframework.web: INFO
