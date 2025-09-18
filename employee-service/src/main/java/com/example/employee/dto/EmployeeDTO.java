@@ -10,7 +10,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmployeeDTO {
+public class    EmployeeDTO {
     private Long id;
 
     @NotBlank(message = "firstName is required")
