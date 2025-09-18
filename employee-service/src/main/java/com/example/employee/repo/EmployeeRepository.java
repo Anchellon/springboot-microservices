@@ -42,4 +42,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     @Query("SELECT COUNT(DISTINCT e.departmentId) FROM Employee e WHERE e.departmentId IS NOT NULL")
     long countDistinctDepartments();
 
+    long countByDepartmentId(Long departmentId);
+
 }

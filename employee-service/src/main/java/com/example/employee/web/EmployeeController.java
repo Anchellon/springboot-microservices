@@ -38,7 +38,7 @@ public class EmployeeController {
         log.info("Fetching employees: page={}, size={}, sort={}, email={}, lastNameContains={}, departmentId={}",
                 page, size, sort, email, lastNameContains, departmentId);
 
-        Page<EmployeeDTO> employees = service.getAllPager(page, size, sort, email, lastNameContains, departmentId);
+        Page<EmployeeDTO> employees = service.getAll(page, size, sort, email, lastNameContains, departmentId);
 
         return ResponseEntity.ok(employees);
     }
@@ -114,5 +114,13 @@ public class EmployeeController {
 
         return ResponseEntity.ok(stats);
     }
+    @GetMapping("/count")
+    public ResponseEntity<Long> countByDepartmentId(@RequestParam Long departmentId) {
+        log.info("Counting employees in department: {}", departmentId);
+        long count = service.countByDepartmentId(departmentId);
+        return ResponseEntity.ok(count);
+    }
+
+
 
 }

@@ -16,4 +16,8 @@ public class Department {
 
     @Column(columnDefinition = "text")
     private String description;
+
+    // NEW: Add unique code field
+    @Column(nullable = false, unique = true, length = 20)
+    private String code;
 }

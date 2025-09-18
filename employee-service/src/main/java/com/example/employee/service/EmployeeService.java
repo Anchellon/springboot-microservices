@@ -40,7 +40,7 @@ public class EmployeeService {
                 .map(this::toDTO)
                 .collect(Collectors.toList());
     }
-    public Page<EmployeeDTO> getAllPager(int page, int size, String sort,
+    public Page<EmployeeDTO> getAll(int page, int size, String sort,
                                     String email, String lastNameContains, Long departmentId) {
         log.debug("Fetching employees: page={}, size={}, sort={}, email={}, lastNameContains={}, departmentId={}",
                 page, size, sort, email, lastNameContains, departmentId);
@@ -253,6 +253,24 @@ public class EmployeeService {
                 totalEmployees, departmentsWithEmployees);
 
         return stats;
+    }
+    @Transactional(readOnly = true)
+    public long countByDepartmentId(Long departmentId) {
+        log.debug("Counting employees in department: {}", departmentId);
+        long count = repository.countByDepartmentId(departmentId);
+        log.debug("Department {} has {} employees", departmentId, count);
+        return count;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<EmployeeDTO> getEmployeesByDepartment(Long departmentId, int page, int size, String sort) {
+        log.debug("Getting employees for department {}: page={}, size={}, sort={}", departmentId, page, size, sort);
+
+        // Use your existing filtering method with departmentId filter
+        Page<EmployeeDTO> employees = getAll(page, size, sort, null, null, departmentId);
+
+        log.debug("Found {} employees in department {}", employees.getTotalElements(), departmentId);
+        return employees;
     }
 
     private EmployeeDTO toDTO(Employee e, boolean enrichWithDepartment) {
