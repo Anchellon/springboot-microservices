@@ -3,8 +3,3 @@ spring:
     name: api-gateway
   config:
     import: "configserver:http://localhost:8888"
-# Minimal Eureka config for discovering config server
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
