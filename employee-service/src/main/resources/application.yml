@@ -1,7 +1,8 @@
 spring:
   application:
     name: EMPLOYEE-SERVICE
-
+  config:
+    import: "configserver:http://localhost:8888"
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres

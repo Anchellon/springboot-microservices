@@ -1,0 +1,21 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        native:
+          search-locations:
+            - classpath:/config/shared/
+            - classpath:/config/services/
+  profiles:
+    active: native
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,refresh,configprops

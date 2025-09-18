@@ -1,8 +1,10 @@
+# department-service.yml - Exactly from your original application.yml
+# Location: C:\Anshul\Documents\Work\Antra\code\springboot-microservices\config-repo\department-service.yml
+
 spring:
   application:
     name: DEPARTMENT-SERVICE
-  config:
-    import: "configserver:http://localhost:8888"
+
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
@@ -31,16 +33,6 @@ spring:
 server:
   port: 8082
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info
 logging:
   pattern:
     console: "[%X{traceId:-NO_TRACE}] %d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"

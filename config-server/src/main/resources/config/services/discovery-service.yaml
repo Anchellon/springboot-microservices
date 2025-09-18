@@ -1,0 +1,19 @@
+# discovery-service.yml - Simple Eureka configuration
+# Location: C:\Anshul\Documents\Work\Antra\code\springboot-microservices\config-repo\discovery-service.yml
+
+server:
+  port: 8761
+
+spring:
+  application:
+    name: discovery-service
+
+# Basic Eureka server configuration
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/

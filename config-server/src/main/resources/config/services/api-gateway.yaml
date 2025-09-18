@@ -1,0 +1,25 @@
+# api-gateway.yml - Exactly from your original application.yml
+# Location: C:\Anshul\Documents\Work\Antra\code\springboot-microservices\config-repo\api-gateway.yml
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: employee-service
+          uri: lb://EMPLOYEE-SERVICE
+          predicates:
+            - Path=/employees/**
+          filters:
+            - RewritePath=/employees(?<segment>/?.*), /api/v1/employees${segment}
+
+        - id: department-service
+          uri: lb://DEPARTMENT-SERVICE
+          predicates:
+            - Path=/departments/**
+          filters:
+            - RewritePath=/departments(?<segment>/?.*), /api/v1/departments${segment}
+
+server:
+  port: 8080

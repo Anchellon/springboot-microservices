@@ -1,0 +1,12 @@
+# Eureka configuration - shared by all services
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+# Management endpoints - shared by all services  
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,refresh,env,configprops

@@ -1,8 +1,7 @@
 spring:
   application:
-    name: DEPARTMENT-SERVICE
-  config:
-    import: "configserver:http://localhost:8888"
+    name: EMPLOYEE-SERVICE
+
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
@@ -14,37 +13,27 @@ spring:
       ddl-auto: validate
     properties:
       hibernate:
-        default_schema: department
+        default_schema: employee
     open-in-view: false
 
   flyway:
     enabled: true
     locations: classpath:/db/migration
-    schemas: department
-    default-schema: department
-    table: flyway_schema_history_departments
+    schemas: employee
+    default-schema: employee
+    table: flyway_schema_history_employees
     create-schemas: true
     baseline-on-migrate: true
     baseline-version: 0
     validate-migration-naming: true
 
 server:
-  port: 8082
+  port: 8081
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info
 logging:
   pattern:
     console: "[%X{traceId:-NO_TRACE}] %d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"
     file: "[%X{traceId:-NO_TRACE}] %d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"
   level:
-    com.example.department: DEBUG
+    com.example.employee: DEBUG
     org.springframework.web: INFO
