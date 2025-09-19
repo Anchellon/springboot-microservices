@@ -1,21 +1,28 @@
 package com.example.employee.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Schema(description = "Employee partial update data transfer object")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmployeePatchDTO {
-    private String firstName;      // Optional - null means "don't change"
-    private String lastName;       // Optional - null means "don't change"
+    @Schema(description = "Employee's first name", example = "John")
+    private String firstName;
 
-    @Email(message = "Invalid email format") // Validate format IF provided
-    private String email;          // Optional - null means "don't change"
+    @Schema(description = "Employee's last name", example = "Doe")
+    private String lastName;
 
-    private Long departmentId;     // Optional - null means "don't change"
+    @Schema(description = "Employee's email address", example = "john.doe@example.com")
+    @Email(message = "Invalid email format")
+    private String email;
+
+    @Schema(description = "Department ID", example = "1")
+    private Long departmentId;
 }
