@@ -12,11 +12,12 @@ public interface EmployeeClient {
     // Call Employee service to count employees in this department
     @GetMapping("/count")
     long countByDepartmentId(@RequestParam("departmentId") Long departmentId);
+
     @GetMapping
     Page<EmployeeDTO> getEmployeesByDepartment(
             @RequestParam("departmentId") Long departmentId,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size,
-            @RequestParam(required = false) String sort
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "20") int size,
+            @RequestParam(value = "sort", required = false) String sort
     );
 }
