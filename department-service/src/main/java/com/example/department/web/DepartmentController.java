@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RefreshScope
-@RequestMapping("/api/v1/departments")
+@RequestMapping("/api/v1/departments/")
 @RequiredArgsConstructor
 @Validated
 @Slf4j

@@ -23,7 +23,7 @@ import java.util.List;
 
 @RestController
 @RefreshScope
-@RequestMapping("/api/v1/employees")
+@RequestMapping("/api/v1/employees/")
 @RequiredArgsConstructor
 @Validated
 @Slf4j
