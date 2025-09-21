@@ -1,5 +1,6 @@
 package com.example.employee.exception;
 
+
 public class EmployeeNotFoundException extends RuntimeException {
     private final String resourceId;
 
@@ -8,7 +9,4 @@ public class EmployeeNotFoundException extends RuntimeException {
         this.resourceId = resourceId;
     }
 
-    public String getResourceId() {
-        return resourceId;
-    }
 }
