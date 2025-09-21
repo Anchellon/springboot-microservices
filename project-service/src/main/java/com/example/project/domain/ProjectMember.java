@@ -11,7 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "project_members",
+@Table(name = "project_members", schema = "project",
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "uk_project_employee",

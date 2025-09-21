@@ -15,11 +15,3 @@ public class ProjectStatsDTO {
     private String groupBy;
     private List<ProjectStatItem> stats;
 }
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class ProjectStatItem {
-    private String category;
-    private Long count;
-}
