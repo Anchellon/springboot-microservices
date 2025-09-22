@@ -145,7 +145,7 @@ class EmployeeServiceIntegrationTest {
 
         // Act
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
-                baseUrl + "/?page=0&size=20",
+                baseUrl + "?page=0&size=20",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<Map<String, Object>>() {}
@@ -186,7 +186,7 @@ class EmployeeServiceIntegrationTest {
 
         // Act
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
-                baseUrl + "/?email=alice@example.com&page=0&size=20",
+                baseUrl + "?email=alice@example.com&page=0&size=20",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<Map<String, Object>>() {}
@@ -213,7 +213,7 @@ class EmployeeServiceIntegrationTest {
 
         // Act
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
-                baseUrl + "/?departmentId=1&page=0&size=20",
+                baseUrl + "?departmentId=1&page=0&size=20",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<Map<String, Object>>() {}
@@ -326,7 +326,7 @@ class EmployeeServiceIntegrationTest {
         HttpEntity<EmployeeDTO> request = new HttpEntity<>(sampleEmployeeDTO, headers);
 
         // Act
-        ResponseEntity<EmployeeDTO> response = restTemplate.postForEntity(baseUrl + "/", request, EmployeeDTO.class);
+        ResponseEntity<EmployeeDTO> response = restTemplate.postForEntity(baseUrl, request, EmployeeDTO.class);
 
         // Assert
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
@@ -362,7 +362,7 @@ class EmployeeServiceIntegrationTest {
         HttpEntity<EmployeeDTO> request = new HttpEntity<>(sampleEmployeeDTO, headers);
 
         // Act
-        ResponseEntity<EmployeeDTO> response = restTemplate.postForEntity(baseUrl + "/", request, EmployeeDTO.class);
+        ResponseEntity<EmployeeDTO> response = restTemplate.postForEntity(baseUrl, request, EmployeeDTO.class);
 
         // Assert
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
@@ -391,7 +391,7 @@ class EmployeeServiceIntegrationTest {
         HttpEntity<EmployeeDTO> request = new HttpEntity<>(sampleEmployeeDTO, headers);
 
         // Act
-        ResponseEntity<EmployeeDTO> response = restTemplate.postForEntity(baseUrl + "/", request, EmployeeDTO.class);
+        ResponseEntity<EmployeeDTO> response = restTemplate.postForEntity(baseUrl, request, EmployeeDTO.class);
 
         // Assert
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
@@ -412,7 +412,7 @@ class EmployeeServiceIntegrationTest {
 
         // Act
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
-                baseUrl + "/",
+                baseUrl,
                 HttpMethod.POST,
                 request,
                 new ParameterizedTypeReference<Map<String, Object>>() {}
@@ -441,7 +441,7 @@ class EmployeeServiceIntegrationTest {
 
         // Act
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
-                baseUrl + "/",
+                baseUrl,
                 HttpMethod.POST,
                 request,
                 new ParameterizedTypeReference<Map<String, Object>>() {}

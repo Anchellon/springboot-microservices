@@ -120,7 +120,7 @@ class DepartmentServiceIntegrationTest {
 
         // Act
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
-                baseUrl + "/?page=0&size=10",
+                baseUrl + "?page=0&size=10",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<Map<String, Object>>() {}
@@ -161,7 +161,7 @@ class DepartmentServiceIntegrationTest {
 
         // Act
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
-                baseUrl + "/?page=0&size=10&nameContains=Eng",
+                baseUrl + "?page=0&size=10&nameContains=Eng",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<Map<String, Object>>() {}
@@ -189,7 +189,7 @@ class DepartmentServiceIntegrationTest {
 
         // Act
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
-                baseUrl + "/?page=0&size=10&sort=name,asc",
+                baseUrl + "?page=0&size=10&sort=name,asc",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<Map<String, Object>>() {}
@@ -315,7 +315,7 @@ class DepartmentServiceIntegrationTest {
 
         // Act
         ResponseEntity<DepartmentDTO> response = restTemplate.postForEntity(
-                baseUrl + "/",
+                baseUrl,
                 request,
                 DepartmentDTO.class
         );
@@ -341,7 +341,7 @@ class DepartmentServiceIntegrationTest {
 
         // Act
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
-                baseUrl + "/",
+                baseUrl,
                 HttpMethod.POST,
                 request,
                 new ParameterizedTypeReference<Map<String, Object>>() {}
@@ -368,7 +368,7 @@ class DepartmentServiceIntegrationTest {
 
         // Act
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
-                baseUrl + "/",
+                baseUrl,
                 HttpMethod.POST,
                 request,
                 new ParameterizedTypeReference<Map<String, Object>>() {}

@@ -94,7 +94,7 @@ class DepartmentControllerTest {
                     .thenReturn(departmentPage);
 
             // When & Then
-            mockMvc.perform(get("/api/v1/departments/"))
+            mockMvc.perform(get("/api/v1/departments"))
                     .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -125,7 +125,7 @@ class DepartmentControllerTest {
                     .thenReturn(customPage);
 
             // When & Then
-            mockMvc.perform(get("/api/v1/departments/")
+            mockMvc.perform(get("/api/v1/departments")
                             .param("page", "1")
                             .param("size", "5")
                             .param("sort", "name,desc"))
@@ -151,7 +151,7 @@ class DepartmentControllerTest {
                     .thenReturn(filteredPage);
 
             // When & Then
-            mockMvc.perform(get("/api/v1/departments/")
+            mockMvc.perform(get("/api/v1/departments")
                             .param("nameContains", "Eng"))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.content", hasSize(1)))
@@ -174,7 +174,7 @@ class DepartmentControllerTest {
                     .thenReturn(filteredPage);
 
             // When & Then
-            mockMvc.perform(get("/api/v1/departments/")
+            mockMvc.perform(get("/api/v1/departments")
                             .param("codeContains", "HR"))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.content", hasSize(1)))
@@ -282,7 +282,7 @@ class DepartmentControllerTest {
             when(departmentService.create(any(DepartmentDTO.class))).thenReturn(createdDepartment);
 
             // When & Then
-            mockMvc.perform(post("/api/v1/departments/")
+            mockMvc.perform(post("/api/v1/departments")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(createRequest)))
                     .andDo(print())
@@ -305,7 +305,7 @@ class DepartmentControllerTest {
                     .build();
 
             // When & Then
-            mockMvc.perform(post("/api/v1/departments/")
+            mockMvc.perform(post("/api/v1/departments")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(invalidRequest)))
                     .andExpect(status().isBadRequest());
@@ -322,7 +322,7 @@ class DepartmentControllerTest {
                     .build();
 
             // When & Then
-            mockMvc.perform(post("/api/v1/departments/")
+            mockMvc.perform(post("/api/v1/departments")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(invalidRequest)))
                     .andExpect(status().isBadRequest());

@@ -92,7 +92,7 @@ class EmployeeControllerTest {
     }
 
     @Nested
-    @DisplayName("GET /api/v1/employees/ - Paginated Employees")
+    @DisplayName("GET /api/v1/employees - Paginated Employees")
     class GetAllPaginatedTests {
 
         @Test
@@ -104,7 +104,7 @@ class EmployeeControllerTest {
             when(employeeService.getAll(0, 20, null, null, null, null)).thenReturn(page);
 
             // When & Then
-            mockMvc.perform(get("/api/v1/employees/"))
+            mockMvc.perform(get("/api/v1/employees"))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.content", hasSize(3)))
                     .andExpect(jsonPath("$.content[0].firstName", is("Alice")))
@@ -129,7 +129,7 @@ class EmployeeControllerTest {
             when(employeeService.getAll(1, 2, null, null, null, null)).thenReturn(page);
 
             // When & Then
-            mockMvc.perform(get("/api/v1/employees/")
+            mockMvc.perform(get("/api/v1/employees")
                             .param("page", "1")
                             .param("size", "2"))
                     .andExpect(status().isOk())
@@ -153,7 +153,7 @@ class EmployeeControllerTest {
             when(employeeService.getAll(1, 10, null, null, null, null)).thenReturn(emptyPage);
 
             // When & Then
-            mockMvc.perform(get("/api/v1/employees/")
+            mockMvc.perform(get("/api/v1/employees")
                             .param("page", "1")
                             .param("size", "10"))
                     .andExpect(status().isOk())
@@ -175,7 +175,7 @@ class EmployeeControllerTest {
             when(employeeService.getAll(0, 20, "firstName,asc", null, null, null)).thenReturn(page);
 
             // When & Then
-            mockMvc.perform(get("/api/v1/employees/")
+            mockMvc.perform(get("/api/v1/employees")
                             .param("sort", "firstName,asc"))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.content", hasSize(3)))
@@ -193,7 +193,7 @@ class EmployeeControllerTest {
             when(employeeService.getAll(0, 20, null, "alice@example.com", null, null)).thenReturn(page);
 
             // When & Then
-            mockMvc.perform(get("/api/v1/employees/")
+            mockMvc.perform(get("/api/v1/employees")
                             .param("email", "alice@example.com"))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.content", hasSize(1)))
@@ -212,7 +212,7 @@ class EmployeeControllerTest {
             when(employeeService.getAll(0, 20, null, null, "Martinez", null)).thenReturn(page);
 
             // When & Then
-            mockMvc.perform(get("/api/v1/employees/")
+            mockMvc.perform(get("/api/v1/employees")
                             .param("lastNameContains", "Martinez"))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.content", hasSize(1)))
@@ -231,7 +231,7 @@ class EmployeeControllerTest {
             when(employeeService.getAll(0, 20, null, null, null, 1L)).thenReturn(page);
 
             // When & Then
-            mockMvc.perform(get("/api/v1/employees/")
+            mockMvc.perform(get("/api/v1/employees")
                             .param("departmentId", "1"))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.content", hasSize(2)))
@@ -251,7 +251,7 @@ class EmployeeControllerTest {
             when(employeeService.getAll(0, 10, "firstName,desc", null, "Nguyen", 1L)).thenReturn(page);
 
             // When & Then
-            mockMvc.perform(get("/api/v1/employees/")
+            mockMvc.perform(get("/api/v1/employees")
                             .param("page", "0")
                             .param("size", "10")
                             .param("sort", "firstName,desc")
@@ -339,7 +339,7 @@ class EmployeeControllerTest {
             when(employeeService.create(any(EmployeeDTO.class), eq("test-key"))).thenReturn(createdEmployee);
 
             // When & Then
-            mockMvc.perform(post("/api/v1/employees/")
+            mockMvc.perform(post("/api/v1/employees")
                             .contentType(MediaType.APPLICATION_JSON)
                             .header("Idempotency-Key", "test-key")
                             .content(objectMapper.writeValueAsString(newEmployee)))
@@ -362,7 +362,7 @@ class EmployeeControllerTest {
                     .build();
 
             // When & Then
-            mockMvc.perform(post("/api/v1/employees/")
+            mockMvc.perform(post("/api/v1/employees")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(invalidEmployee)))
                     .andExpect(status().isBadRequest());
@@ -380,7 +380,7 @@ class EmployeeControllerTest {
                     .build();
 
             // When & Then
-            mockMvc.perform(post("/api/v1/employees/")
+            mockMvc.perform(post("/api/v1/employees")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(invalidEmployee)))
                     .andExpect(status().isBadRequest());
