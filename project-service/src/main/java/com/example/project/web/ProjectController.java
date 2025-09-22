@@ -63,6 +63,24 @@ public class ProjectController {
         Page<ProjectDTO> projects = projectService.listProjects(status, from, to, code, name, pageable);
         return ResponseEntity.ok(projects);
     }
+    @PostMapping
+    @Operation(summary = "Create new project", description = "Create a new project")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Project created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid project data"),
+            @ApiResponse(responseCode = "409", description = "Project code already exists")
+    })
+    public ResponseEntity<ProjectDTO> createProject(
+            @Valid @RequestBody ProjectDTO projectDTO) {
+
+        log.debug("Creating project with code: {}", projectDTO.getCode());
+
+        ProjectDTO createdProject = projectService.createProject(projectDTO);
+
+        log.info("Successfully created project with id: {}", createdProject.getId());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdProject);
+    }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get project by ID", description = "Retrieve a specific project by its ID")
