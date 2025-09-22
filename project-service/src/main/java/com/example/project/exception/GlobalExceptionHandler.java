@@ -1,7 +1,7 @@
 package com.example.project.exception;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.ConstraintViolation;
+
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -10,15 +10,15 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -52,7 +52,20 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
     }
 
-    // 400 Bad Request - Validation errors on request body
+    // 400 Bad Request - Input validation failures (controller-level)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ProblemDetail> handleIllegalArgumentException(IllegalArgumentException ex) {
+        log.warn("Invalid argument provided: {}", ex.getMessage());
+
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST, ex.getMessage());
+        problemDetail.setTitle("Bad Request");
+        problemDetail.setProperty("timestamp", LocalDateTime.now());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
+    }
+
+    // 400 Bad Request - Validation errors on request body (legacy)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ProblemDetail> handleValidationException(MethodArgumentNotValidException ex) {
         log.warn("Validation error: {}", ex.getMessage());
@@ -63,6 +76,54 @@ public class GlobalExceptionHandler {
                     Map<String, String> errorMap = new HashMap<>();
                     errorMap.put("field", ((FieldError) error).getField());
                     errorMap.put("message", error.getDefaultMessage());
+                    return errorMap;
+                })
+                .collect(Collectors.toList());
+
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST, "Invalid payload");
+        problemDetail.setTitle("Validation Error");
+        problemDetail.setProperty("timestamp", LocalDateTime.now());
+        problemDetail.setProperty("errors", errorList);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
+    }
+
+    // 400 Bad Request - Spring Boot 3.x validation errors
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    public ResponseEntity<ProblemDetail> handleHandlerMethodValidationException(HandlerMethodValidationException ex) {
+        log.warn("Handler method validation error: {}", ex.getMessage());
+
+        // Extract validation errors using correct method calls
+        List<Map<String, String>> errorList = ex.getValueResults().stream()
+                .flatMap(result -> result.getResolvableErrors().stream())
+                .map(error -> {
+                    Map<String, String> errorMap = new HashMap<>();
+                    String fieldName = "unknown";
+                    String message = error.getDefaultMessage();
+
+                    // Check if it's a FieldError to get the field name
+                    if (error instanceof FieldError fieldError) {
+                        fieldName = fieldError.getField();
+                    } else {
+                        // For other types of errors, use the codes to try to extract field info
+                        String[] codes = error.getCodes();
+                        if (codes != null) {
+                            // Try to extract field name from error codes
+                            for (String code : codes) {
+                                if (code.contains(".")) {
+                                    String[] parts = code.split("\\.");
+                                    if (parts.length > 1) {
+                                        fieldName = parts[parts.length - 1];
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    errorMap.put("field", fieldName);
+                    errorMap.put("message", message != null ? message : "Validation failed");
                     return errorMap;
                 })
                 .collect(Collectors.toList());
@@ -206,20 +267,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(problemDetail);
     }
 
-    // 500 Internal Server Error - Catch-all for unexpected errors
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ProblemDetail> handleGenericException(Exception ex) {
-        log.error("Unexpected error occurred: {}", ex.getMessage(), ex);
-
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
-                HttpStatus.INTERNAL_SERVER_ERROR, "An internal server error occurred");
-        problemDetail.setTitle("Internal Server Error");
-        problemDetail.setProperty("timestamp", LocalDateTime.now());
-        // Explicitly NOT including stack trace or detailed error information
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(problemDetail);
-    }
-
+    // 404 Not Found - Project member not found
     @ExceptionHandler(ProjectMemberNotFoundException.class)
     public ResponseEntity<ProblemDetail> handleProjectMemberNotFoundException(ProjectMemberNotFoundException ex) {
         log.warn("Project member not found: {}", ex.getMessage());
@@ -233,5 +281,19 @@ public class GlobalExceptionHandler {
         problemDetail.setProperty("timestamp", LocalDateTime.now());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
+    }
+
+    // 500 Internal Server Error - Catch-all for unexpected errors
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ProblemDetail> handleGenericException(Exception ex) {
+        log.error("Unexpected error occurred: {}", ex.getMessage(), ex);
+
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.INTERNAL_SERVER_ERROR, "An internal server error occurred");
+        problemDetail.setTitle("Internal Server Error");
+        problemDetail.setProperty("timestamp", LocalDateTime.now());
+        // Explicitly NOT including stack trace or detailed error information
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(problemDetail);
     }
 }
