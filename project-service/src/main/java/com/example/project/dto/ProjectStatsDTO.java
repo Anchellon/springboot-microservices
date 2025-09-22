@@ -1,7 +1,6 @@
 package com.example.project.dto;
 
-import com.example.project.domain.ProjectStatus;
-import jakarta.validation.constraints.*;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import java.util.List;
@@ -11,7 +10,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Schema(description = "Project statistics grouped by specified criteria")
 public class ProjectStatsDTO {
+    @Schema(description = "The grouping method used for statistics",
+            example = "status",
+            allowableValues = {"status", "month"})
     private String groupBy;
+
+    @Schema(description = "List of statistical items for each group")
     private List<ProjectStatItem> stats;
 }
